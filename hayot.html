@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>מגדיר לחיות דמיוניות</title>
+  <style>
+    :root {
+      --bg: #0b0d10;
+      --panel: #121620;
+      --panel2: #0f131b;
+      --text: #e9edf3;
+      --muted: #a9b3c3;
+      --accent: #6aa7ff;
+      --good: #3ddc97;
+      --bad: #ff6a6a;
+      --border: rgba(255,255,255,.08);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+      background: radial-gradient(1200px 700px at 30% -10%, rgba(106,167,255,.20), transparent 60%),
+                  radial-gradient(900px 600px at 80% 20%, rgba(61,220,151,.12), transparent 60%),
+                  var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+      background: rgba(11,13,16,.70);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 16px; }
+    .topbar {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(106,167,255,.9), rgba(61,220,151,.8));
+      box-shadow: var(--shadow);
+    }
+
+    h1 {
+      font-size: 18px;
+      margin: 0;
+      line-height: 1.2;
+    }
+    .sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    button, .pill {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: transform .08s ease, background .15s ease, border-color .15s ease;
+      user-select: none;
+    }
+
+    button:hover { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.14); }
+    button:active { transform: translateY(1px); }
+
+    .primary {
+      border-color: rgba(106,167,255,.35);
+      background: rgba(106,167,255,.10);
+    }
+    .primary:hover { background: rgba(106,167,255,.16); }
+
+    .yes {
+      border-color: rgba(61,220,151,.35);
+      background: rgba(61,220,151,.12);
+    }
+    .yes:hover { background: rgba(61,220,151,.18); }
+
+    .no {
+      border-color: rgba(255,106,106,.35);
+      background: rgba(255,106,106,.10);
+    }
+    .no:hover { background: rgba(255,106,106,.16); }
+
+    .pill {
+      cursor: default;
+      color: var(--muted);
+      padding: 8px 12px;
+    }
+
+    main .grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 16px;
+      align-items: start;
+      padding-bottom: 26px;
+    }
+
+    @media (max-width: 980px) {
+      main .grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .cardHead {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      background: rgba(0,0,0,.10);
+    }
+
+    .cardHead h2 {
+      margin: 0;
+      font-size: 15px;
+      color: var(--text);
+    }
+
+    .cardBody { padding: 16px; }
+
+    .imgFrame {
+      background: rgba(0,0,0,.22);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      display: block;
+      background: rgba(255,255,255,.02);
+    }
+
+    .q {
+      font-size: 18px;
+      margin: 0 0 12px 0;
+      line-height: 1.55;
+    }
+    .hint {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      align-items: center;
+    }
+
+    .resultName {
+      font-size: 22px;
+      margin: 0 0 8px 0;
+      color: var(--accent);
+      letter-spacing: .2px;
+    }
+
+    .path {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      color: rgba(233,237,243,.75);
+      background: rgba(0,0,0,.22);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-top: 14px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 980px) { .gallery { grid-template-columns: repeat(5, 1fr); } }
+    @media (max-width: 700px) { .gallery { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 460px) { .gallery { grid-template-columns: repeat(3, 1fr); } }
+
+    .thumb {
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.20);
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      transition: transform .08s ease, border-color .15s ease, background .15s ease;
+    }
+    .thumb:hover { transform: translateY(-1px); border-color: rgba(255,255,255,.15); background: rgba(0,0,0,.28); }
+    .thumb.selected { border-color: rgba(106,167,255,.55); box-shadow: 0 0 0 2px rgba(106,167,255,.18) inset; }
+    .thumb img { border-radius: 0; }
+
+    .thumbLabel {
+      position: absolute;
+      bottom: 6px;
+      left: 6px;
+      background: rgba(0,0,0,.55);
+      border: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.92);
+      padding: 3px 7px;
+      border-radius: 999px;
+      font-size: 11px;
+      direction: ltr;
+    }
+
+    .small {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .kbd {
+      display: inline-block;
+      border: 1px solid rgba(255,255,255,.16);
+      border-bottom-color: rgba(255,255,255,.28);
+      background: rgba(0,0,0,.28);
+      padding: 1px 6px;
+      border-radius: 6px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      color: rgba(233,237,243,.9);
+      margin: 0 2px;
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="badge" aria-hidden="true"></div>
+        <div>
+          <h1>מגדיר לחיות דמיוניות</h1>
+          <div class="sub">בחר יצור → ענה כן/לא לפי התכונות → קבל את השם</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <span class="pill" id="creaturePill">יצור: 001</span>
+        <button class="primary" id="prevBtn">הקודם</button>
+        <button class="primary" id="nextBtn">הבא</button>
+        <button id="restartBtn">איפוס שאלון</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="grid">
+
+      <!-- Left: Creature + Questions -->
+      <section class="card">
+        <div class="cardHead">
+          <h2>היצור הנבחר</h2>
+          <div class="small">
+            מקשים: <span class="kbd">Y</span>=כן <span class="kbd">N</span>=לא
+            <span class="kbd">←</span>/<span class="kbd">→</span>=החלפה
+          </div>
+        </div>
+        <div class="cardBody">
+          <div class="imgFrame">
+            <img id="creatureImg" alt="יצור דמיוני" />
+          </div>
+
+          <div style="height: 14px;"></div>
+
+          <div id="qaArea">
+            <p class="q" id="questionText">טוען שאלון…</p>
+            <p class="hint" id="questionHint"></p>
+
+            <div class="actions">
+              <button class="yes" id="yesBtn">כן</button>
+              <button class="no" id="noBtn">לא</button>
+            </div>
+
+            <div class="path" id="pathBox" title="המסלול שהתקדם עד עכשיו"></div>
+          </div>
+
+          <div id="resultArea" style="display:none;">
+            <p class="resultName" id="resultName"></p>
+            <p class="hint">אם זה לא תואם את היצור שבתמונה, פשוט לחץ/י <b>איפוס שאלון</b> וענה/י שוב.</p>
+            <div class="actions">
+              <button class="primary" id="againBtn">שאל שוב על אותו יצור</button>
+              <button class="primary" id="nextAfterResultBtn">ליצור הבא</button>
+            </div>
+            <div class="path" id="pathBox2"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: Gallery -->
+      <aside class="card">
+        <div class="cardHead">
+          <h2>גלריה</h2>
+          <div class="small">לחץ על תמונה כדי לבחור יצור</div>
+        </div>
+        <div class="cardBody">
+          <p class="hint" style="margin-top:0;">
+            התמונות נטענות ישירות מגיטהאב (raw).
+          </p>
+
+          <div style="height: 12px;"></div>
+          <div class="gallery" id="gallery"></div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</main>
+
+<script>
+  /***********************
+   * 1) CONFIG: images (from your GitHub raw links)
+   ***********************/
+  const IMAGES = [
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/1%20%D7%97%D7%A9%D7%95%D7%A3%20%D7%92%D7%95%D7%9C%D7%92%D7%95%D7%9C%D7%AA%20%D7%9E%D7%A2%D7%95%D7%A4%D7%A3.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/2%20%D7%96%D7%97%D7%9C%D7%9F%20%D7%99%D7%9E%D7%99.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/3%20%D7%9C%D7%99%D7%9C%D7%99%D7%AA%20%D7%96%D7%A8%D7%99%D7%96%D7%94.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/4%20%D7%A0%D7%91%D7%A8%D7%9F%20%D7%9E%D7%93%D7%95%D7%9E%D7%94.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/5%20%D7%92%D7%A8%D7%A4%D7%99%D7%9C%D7%93%20%D7%A6%D7%A4%D7%95%D7%A0%D7%99.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/6%20%D7%90%D7%92%D7%95%D7%96%D7%9F%20%D7%9E%D7%A7%D7%95%D7%A4%D7%A3.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/7%20%D7%A8%D7%91%20%D7%A8%D7%92%D7%9C%20%D7%A2%D7%92%D7%9C%D7%92%D7%9C.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/8%20%D7%A4%D7%A8%D7%A6%D7%99%D7%A4%D7%9C%D7%95%D7%9A%20%D7%9E%D7%A6%D7%95%D7%99.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/9%20%D7%A7%D7%95%D7%A7%D7%A8%D7%A6'%D7%94%20%D7%9E%D7%A4%D7%95%D7%A1%D7%A4%D7%A1%D7%AA.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/10%20%D7%A9%D7%9B%D7%9C%D7%9F%20%D7%9E%D7%98%D7%A4%D7%A1.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/11%20%D7%A7%D7%95%D7%A7%D7%A8%D7%A6'%D7%94%20%D7%A9%D7%97%D7%95%D7%A8%D7%94.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/12%20%D7%97%D7%A8%D7%98%D7%98%D7%9F%20%D7%92%D7%93%D7%95%D7%9C.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/13%20%D7%91%D7%99%D7%A6%D7%A0%D7%99%D7%AA%20%D7%A9%D7%98%D7%95%D7%97%D7%AA%20%D7%9E%D7%A7%D7%95%D7%A8.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/14%20%D7%92%D7%A8%D7%92%D7%A8%D7%9F%20%D7%9E%D7%A6%D7%95%D7%99.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/15%20%D7%90%D7%95%D7%9B%D7%9C%20%D7%A2%D7%95%D7%92%D7%99%D7%95%D7%AA%20%D7%9E%D7%A6%D7%95%D7%99.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/16%20%D7%A9%D7%A8%D7%A4%D7%9B%D7%A3%20%D7%94%D7%97%D7%95%D7%9C%D7%95%D7%AA.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/17%20%D7%91%D7%99%D7%A9%D7%9F%20%D7%94%D7%A2%D7%A6%D7%99%D7%9D.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/18%20%D7%A0%D7%99%D7%A0%D7%92'%D7%94%20%D7%A6%D7%94%D7%95%D7%91%D7%94.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/19%20%D7%A9%D7%97%D7%99%D7%99%D7%9F%20%D7%94%D7%A2%D7%9E%D7%A7%D7%99%D7%9D.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/20%20%D7%92'%D7%95%D7%A7%20%D7%9E%D7%9C%D7%9E%D7%A7%D7%99.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/21%20%D7%A7%D7%A9%D7%A7%D7%A9%D7%9F%20%D7%94%D7%A0%D7%97%D7%9C%D7%99%D7%9D.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/22%20%D7%AA%D7%95%D7%9C%D7%A2%D7%9F%20%D7%94%D7%99%D7%A2%D7%A8%D7%95%D7%AA.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/23%20%D7%90%D7%95%D7%9B%D7%9C%20%D7%A2%D7%95%D7%92%D7%99%D7%95%D7%AA%20%D7%9E%D7%A4%D7%95%D7%A1%D7%A4%D7%A1.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/24%20%D7%9E%D7%A4%D7%A6%D7%97%20%D7%97%D7%A6%D7%99%D7%9C%D7%99%D7%9D%20%D7%A6%D7%A4%D7%95%D7%A0%D7%99.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/25%20%D7%A4%D7%A0%D7%98%D7%A4%D7%95%D7%93%20%D7%90%D7%A8%D7%A1%D7%99.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/26.%20%D7%91%D7%99%D7%99%D7%A9%D7%9F%20%D7%94%D7%A9%D7%93%D7%95%D7%AA.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/27%20%D7%98%D7%95%D7%A8%20%D7%9E%D7%AA%D7%9B%D7%A0%D7%A1.png?raw=true"
+  ];
+
+  let CREATURE_COUNT = IMAGES.length;
+
+  function pad3(n) { return String(n).padStart(3, "0"); }
+  function imagePath(index1based) {
+    return IMAGES[index1based - 1];
+  }
+
+  /***********************
+   * 2) Decision tree (your exact logic)
+   ***********************/
+  const TREE = {
+    1: { q: "בעל מקור ברור?", yes: 2, no: 7 },
+
+    2: { q: "בעל כנפיים?", yes: 3, no: { leaf: "מפצח החצילים הצפוני" } },
+
+    3: { q: "בעל רגליים ארוכות במיוחד?", yes: 4, no: 5 },
+
+    4: { q: "בעל מקור ארוך ושטוח?", yes: { leaf: "ביצנית שטוחת מקור" }, no: { leaf: "פרצופלוך מצוי" } },
+
+    5: { q: "בעל מקור גדול ורחב?", yes: { leaf: "תולען היערות" }, no: 6 },
+
+    6: { q: "בעל מקור ארוך וצר?", yes: { leaf: "שרפרף החולות" }, no: { leaf: "תולען החוף" } },
+
+    7: { q: "יש לו יותר מ־6 רגליים?", yes: 8, no: 12 },
+
+    8: { q: "בעל 12 רגליים?", yes: { leaf: "רב רגל עגלגל" }, no: 9 },
+
+    9: { q: "בעל 8 רגליים?", yes: 10, no: { leaf: "זחלן ימי" } },
+
+    10:{ q: "כל זוג רגליים יוצא מפרק נפרד?", yes: { leaf: "נינג'ה צהובה" }, no: 11 },
+
+    11:{ q: "בעל גוף שחור?", yes: { leaf: "קוקרצ'ה שחורה" }, no: { leaf: "קוקרצ'ה מפוספסת" } },
+
+    12:{ q: "בעל סנפירים?", yes: 13, no: 15 },
+
+    13:{ q: "בעל בלורית שיער?", yes: { leaf: "קשקשן הנחלים" }, no: 14 },
+
+    14:{ q: "בעל גוף שמן ונפוח?", yes: { leaf: "שחיין נפוח" }, no: { leaf: "שחיין האגמים" } },
+
+    15:{ q: "בעל קשקשים ברורים?", yes: 16, no: 18 },
+
+    16:{ q: "בעל אף ארוך וצר?", yes: { leaf: "גרגרן מצוי" }, no: 17 },
+
+    17:{ q: "בעל לשון מפוצלת?", yes: { leaf: "אוכל עוגיות מצוי" }, no: { leaf: "אוכל עוגיות מפוספס" } },
+
+    18:{ q: "בעל זנב ארוך במיוחד?", yes: 19, no: 23 },
+
+    19:{ q: "בעל שיער שחור וארוך יחסית?", yes: { leaf: "נברן מדומה" }, no: 20 },
+
+    20:{ q: "בעל עיניים גדולות ומבוהלות?", yes: { leaf: "ביישן העצים" }, no: 21 },
+
+    21:{ q: "בעל אצבעות רגליים ארוכות?", yes: { leaf: "שכלן מטפס" }, no: 22 },
+
+    22:{ q: "בעל זנב עבה ומפוספס?", yes: { leaf: "גרפילד צפוני" }, no: { leaf: "אגוזן מקופף" } },
+
+    23:{ q: "בעל מחושים (אנטנות?)", yes: 24, no: 26 },
+
+    24:{ q: "בעל כנפיים ברורות?", yes: { leaf: "לילית זריזה" }, no: 25 },
+
+    25:{ q: "מחושים ארוכים מאורך הגוף?", yes: { leaf: "ג'וק מלמקי" }, no: { leaf: "פנטפוד ארסי" } },
+
+    26:{ q: "בעל נוצות?", yes: { leaf: "חשוף גולגולת מעופף" }, no: 27 },
+
+    27:{ q: "בעל זנב ברור?", yes: 28, no: 30 },
+
+    28:{ q: "בעל עיניים גדולות במיוחד?", yes: { leaf: "ביישן השדות" }, no: 29 },
+
+    29:{ q: "בעל שיניים גדולות ובולטות?", yes: { leaf: "חתלתול קטלני" }, no: { leaf: "צ'יקמוק מצ'וקמק" } },
+
+    30:{ q: "בעל קרניים?", yes: { leaf: "טור מתכנס" }, no: { leaf: "חרטטן גדול" } },
+  };
+
+  /***********************
+   * 3) App state
+   ***********************/
+  let currentCreature = 1; // 1..CREATURE_COUNT
+  let nodeId = 1;
+  let path = []; // array of {nodeId, answer: true/false}
+
+  /***********************
+   * 4) DOM refs
+   ***********************/
+  const creaturePill = document.getElementById("creaturePill");
+  const creatureImg  = document.getElementById("creatureImg");
+
+  const qaArea = document.getElementById("qaArea");
+  const resultArea = document.getElementById("resultArea");
+
+  const questionText = document.getElementById("questionText");
+  const questionHint = document.getElementById("questionHint");
+  const pathBox = document.getElementById("pathBox");
+  const pathBox2 = document.getElementById("pathBox2");
+  const resultName = document.getElementById("resultName");
+
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
+
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const restartBtn = document.getElementById("restartBtn");
+
+  const againBtn = document.getElementById("againBtn");
+  const nextAfterResultBtn = document.getElementById("nextAfterResultBtn");
+
+  const gallery = document.getElementById("gallery");
+
+  /***********************
+   * 5) Render helpers
+   ***********************/
+  function setCreature(index1based) {
+    currentCreature = clamp(index1based, 1, CREATURE_COUNT);
+    creaturePill.textContent = `יצור: ${pad3(currentCreature)}`;
+
+    creatureImg.src = imagePath(currentCreature);
+    creatureImg.alt = `יצור ${pad3(currentCreature)}`;
+
+    // highlight selected thumb
+    [...document.querySelectorAll(".thumb")].forEach(el => {
+      el.classList.toggle("selected", Number(el.dataset.idx) === currentCreature);
+    });
+
+    resetQuiz();
+  }
+
+  function resetQuiz() {
+    nodeId = 1;
+    path = [];
+    resultArea.style.display = "none";
+    qaArea.style.display = "block";
+    renderNode();
+  }
+
+  function renderNode() {
+    const node = TREE[nodeId];
+    if (!node) {
+      showResult("שגיאה: צומת לא קיים בעץ");
+      return;
+    }
+
+    questionText.textContent = node.q;
+    questionHint.textContent = "ענה/י לפי מה שרואים בתמונה. (אין פה 'נכון/לא נכון' אוטומטי — זה מגדיר ידני.)";
+    pathBox.textContent = formatPath();
+  }
+
+  function formatPath() {
+    if (path.length === 0) return "מסלול: (התחלה)";
+    return "מסלול: " + path.map(step => `${step.nodeId}:${step.answer ? "כן" : "לא"}`).join(" → ");
+  }
+
+  function answer(isYes) {
+    const node = TREE[nodeId];
+    if (!node) return;
+
+    path.push({ nodeId, answer: isYes });
+
+    const next = isYes ? node.yes : node.no;
+
+    if (typeof next === "number") {
+      nodeId = next;
+      renderNode();
+    } else if (next && typeof next === "object" && next.leaf) {
+      showResult(next.leaf);
+    } else {
+      showResult("שגיאה: יעד לא תקין בעץ");
+    }
+  }
+
+  function showResult(name) {
+    qaArea.style.display = "none";
+    resultArea.style.display = "block";
+    resultName.textContent = name;
+    pathBox2.textContent = formatPath();
+  }
+
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+  /***********************
+   * 6) Gallery
+   ***********************/
+  function buildGallery() {
+    gallery.innerHTML = "";
+    for (let i = 1; i <= CREATURE_COUNT; i++) {
+      const t = document.createElement("div");
+      t.className = "thumb";
+      t.dataset.idx = String(i);
+      t.title = `בחר יצור ${pad3(i)}`;
+
+      const img = document.createElement("img");
+      img.loading = "lazy";
+      img.src = imagePath(i);
+      img.alt = `תמונה ממוזערת ${pad3(i)}`;
+
+      const label = document.createElement("div");
+      label.className = "thumbLabel";
+      label.textContent = pad3(i);
+
+      t.appendChild(img);
+      t.appendChild(label);
+
+      t.addEventListener("click", () => setCreature(i));
+      gallery.appendChild(t);
+    }
+
+    setCreature(clamp(currentCreature, 1, CREATURE_COUNT));
+  }
+
+  /***********************
+   * 7) Events
+   ***********************/
+  yesBtn.addEventListener("click", () => answer(true));
+  noBtn.addEventListener("click", () => answer(false));
+
+  prevBtn.addEventListener("click", () => setCreature(currentCreature - 1));
+  nextBtn.addEventListener("click", () => setCreature(currentCreature + 1));
+  restartBtn.addEventListener("click", resetQuiz);
+
+  againBtn.addEventListener("click", resetQuiz);
+  nextAfterResultBtn.addEventListener("click", () => setCreature(currentCreature + 1));
+
+  // Keyboard shortcuts
+  document.addEventListener("keydown", (e) => {
+    const k = e.key.toLowerCase();
+    if (k === "y") answer(true);
+    if (k === "n") answer(false);
+    if (e.key === "ArrowLeft") setCreature(currentCreature - 1);
+    if (e.key === "ArrowRight") setCreature(currentCreature + 1);
+    if (k === "r") resetQuiz();
+  });
+
+  /***********************
+   * 8) Boot
+   ***********************/
+  buildGallery();
+</script>
+
+</body>
+</html>
