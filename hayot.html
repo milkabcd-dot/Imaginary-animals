@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="he" dir="rtl">
 <head>
@@ -6,16 +7,15 @@
   <title>מגדיר לחיות דמיוניות</title>
   <style>
     :root {
-      --bg: #0b0d10;
-      --panel: #121620;
-      --panel2: #0f131b;
-      --text: #e9edf3;
-      --muted: #a9b3c3;
-      --accent: #6aa7ff;
-      --good: #3ddc97;
-      --bad: #ff6a6a;
-      --border: rgba(255,255,255,.08);
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --bg: #f0f9ff;
+      --panel: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --accent: #3b82f6;
+      --good: #10b981;
+      --bad: #ef4444;
+      --border: rgba(148,163,184,.25);
+      --shadow: 0 4px 20px rgba(0,0,0,.08);
       --radius: 18px;
     }
 
@@ -23,10 +23,14 @@
     body {
       margin: 0;
       font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
-      background: radial-gradient(1200px 700px at 30% -10%, rgba(106,167,255,.20), transparent 60%),
-                  radial-gradient(900px 600px at 80% 20%, rgba(61,220,151,.12), transparent 60%),
-                  var(--bg);
+      background: 
+                  radial-gradient(1000px 600px at 20% 10%, rgba(252,211,77,.4), transparent 50%),
+                  radial-gradient(800px 500px at 80% 30%, rgba(251,146,60,.35), transparent 50%),
+                  radial-gradient(900px 600px at 50% 80%, rgba(34,211,238,.4), transparent 50%),
+                  radial-gradient(700px 500px at 90% 90%, rgba(167,139,250,.35), transparent 50%),
+                  linear-gradient(135deg, #fef3c7 0%, #dbeafe 50%, #e0e7ff 100%);
       color: var(--text);
+      min-height: 100vh;
     }
 
     header {
@@ -34,11 +38,17 @@
       top: 0;
       z-index: 50;
       backdrop-filter: blur(10px);
-      background: rgba(11,13,16,.70);
+      background: rgba(255,255,255,.85);
       border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 10px rgba(0,0,0,.05);
     }
 
-    .wrap { max-width: 1200px; margin: 0 auto; padding: 16px; }
+    .wrap { 
+      max-width: 900px; 
+      margin: 0 auto; 
+      padding: 16px; 
+    }
+
     .topbar {
       display: flex;
       gap: 12px;
@@ -57,8 +67,8 @@
       width: 38px;
       height: 38px;
       border-radius: 12px;
-      background: linear-gradient(135deg, rgba(106,167,255,.9), rgba(61,220,151,.8));
-      box-shadow: var(--shadow);
+      background: linear-gradient(135deg, #f59e0b, #ec4899, #8b5cf6);
+      box-shadow: 0 4px 12px rgba(236,72,153,.3);
     }
 
     h1 {
@@ -81,35 +91,60 @@
 
     button, .pill {
       border: 1px solid var(--border);
-      background: rgba(255,255,255,.04);
+      background: rgba(255,255,255,.8);
       color: var(--text);
       padding: 10px 14px;
       border-radius: 14px;
       cursor: pointer;
-      transition: transform .08s ease, background .15s ease, border-color .15s ease;
+      transition: transform .08s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
       user-select: none;
+      font-size: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.05);
     }
 
-    button:hover { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.14); }
+    button:hover { 
+      background: rgba(255,255,255,1); 
+      border-color: var(--accent);
+      box-shadow: 0 4px 12px rgba(59,130,246,.15);
+    }
     button:active { transform: translateY(1px); }
 
     .primary {
-      border-color: rgba(106,167,255,.35);
-      background: rgba(106,167,255,.10);
+      border-color: var(--accent);
+      background: var(--accent);
+      color: white;
     }
-    .primary:hover { background: rgba(106,167,255,.16); }
+    .primary:hover { 
+      background: #2563eb;
+      border-color: #2563eb;
+      box-shadow: 0 4px 12px rgba(37,99,235,.25);
+    }
 
     .yes {
-      border-color: rgba(61,220,151,.35);
-      background: rgba(61,220,151,.12);
+      border-color: var(--good);
+      background: var(--good);
+      color: white;
+      font-size: 16px;
+      padding: 12px 24px;
     }
-    .yes:hover { background: rgba(61,220,151,.18); }
+    .yes:hover { 
+      background: #059669;
+      border-color: #059669;
+      box-shadow: 0 4px 12px rgba(16,185,129,.3);
+    }
 
     .no {
-      border-color: rgba(255,106,106,.35);
-      background: rgba(255,106,106,.10);
+      border-color: var(--bad);
+      background: var(--bad);
+      color: white;
+      font-size: 16px;
+      padding: 12px 24px;
     }
-    .no:hover { background: rgba(255,106,106,.16); }
+    .no:hover { 
+      background: #dc2626;
+      border-color: #dc2626;
+      box-shadow: 0 4px 12px rgba(239,68,68,.3);
+    }
 
     .pill {
       cursor: default;
@@ -117,133 +152,88 @@
       padding: 8px 12px;
     }
 
-    main .grid {
-      display: grid;
-      grid-template-columns: 1.4fr 1fr;
-      gap: 16px;
-      align-items: start;
-      padding-bottom: 26px;
-    }
-
-    @media (max-width: 980px) {
-      main .grid { grid-template-columns: 1fr; }
-    }
-
     .card {
-      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      background: rgba(255,255,255,.9);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      box-shadow: 0 8px 24px rgba(0,0,0,.08);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .cardBody { padding: 20px; }
+
+    .imgContainer {
+      position: relative;
+      background: linear-gradient(135deg, rgba(251,191,36,.1), rgba(167,139,250,.1));
+      border: 2px solid rgba(251,191,36,.3);
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 20px;
+      max-height: 50vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       overflow: hidden;
     }
 
-    .cardHead {
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      background: rgba(0,0,0,.10);
-    }
-
-    .cardHead h2 {
-      margin: 0;
-      font-size: 15px;
-      color: var(--text);
-    }
-
-    .cardBody { padding: 16px; }
-
-    .imgFrame {
-      background: rgba(0,0,0,.22);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 12px;
+    .creatureNumber {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      background: linear-gradient(135deg, #f59e0b, #ec4899);
+      backdrop-filter: blur(10px);
+      border: 2px solid white;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 18px;
+      font-weight: 700;
+      z-index: 10;
+      direction: ltr;
+      box-shadow: 0 4px 12px rgba(236,72,153,.4);
     }
 
     img {
-      width: 100%;
+      max-width: 100%;
+      max-height: 48vh;
+      width: auto;
       height: auto;
       border-radius: 12px;
       display: block;
       background: rgba(255,255,255,.02);
+      object-fit: contain;
     }
 
     .q {
-      font-size: 18px;
+      font-size: 20px;
       margin: 0 0 12px 0;
       line-height: 1.55;
+      font-weight: 500;
     }
     .hint {
-      margin: 0;
+      margin: 0 0 16px 0;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 14px;
       line-height: 1.5;
     }
 
     .actions {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       flex-wrap: wrap;
-      margin-top: 14px;
+      margin-top: 20px;
       align-items: center;
+      justify-content: center;
     }
 
     .resultName {
-      font-size: 22px;
-      margin: 0 0 8px 0;
+      font-size: 26px;
+      margin: 0 0 12px 0;
       color: var(--accent);
       letter-spacing: .2px;
-    }
-
-    .path {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      font-size: 12px;
-      color: rgba(233,237,243,.75);
-      background: rgba(0,0,0,.22);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px 12px;
-      margin-top: 14px;
-      overflow-x: auto;
-      white-space: nowrap;
-    }
-
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 10px;
-    }
-    @media (max-width: 980px) { .gallery { grid-template-columns: repeat(5, 1fr); } }
-    @media (max-width: 700px) { .gallery { grid-template-columns: repeat(4, 1fr); } }
-    @media (max-width: 460px) { .gallery { grid-template-columns: repeat(3, 1fr); } }
-
-    .thumb {
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: rgba(0,0,0,.20);
-      overflow: hidden;
-      cursor: pointer;
-      position: relative;
-      transition: transform .08s ease, border-color .15s ease, background .15s ease;
-    }
-    .thumb:hover { transform: translateY(-1px); border-color: rgba(255,255,255,.15); background: rgba(0,0,0,.28); }
-    .thumb.selected { border-color: rgba(106,167,255,.55); box-shadow: 0 0 0 2px rgba(106,167,255,.18) inset; }
-    .thumb img { border-radius: 0; }
-
-    .thumbLabel {
-      position: absolute;
-      bottom: 6px;
-      left: 6px;
-      background: rgba(0,0,0,.55);
-      border: 1px solid rgba(255,255,255,.12);
-      color: rgba(255,255,255,.92);
-      padding: 3px 7px;
-      border-radius: 999px;
-      font-size: 11px;
-      direction: ltr;
+      text-align: center;
+      font-weight: 600;
     }
 
     .small {
@@ -256,12 +246,70 @@
       border: 1px solid rgba(255,255,255,.16);
       border-bottom-color: rgba(255,255,255,.28);
       background: rgba(0,0,0,.28);
-      padding: 1px 6px;
+      padding: 2px 7px;
       border-radius: 6px;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
       font-size: 12px;
       color: rgba(233,237,243,.9);
       margin: 0 2px;
+    }
+
+    .navHint {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 16px;
+      padding: 12px;
+      background: rgba(148,163,184,.08);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    @media (max-width: 600px) {
+      .wrap { padding: 12px; }
+      .cardBody { padding: 16px; }
+      
+      h1 { font-size: 16px; }
+      .sub { font-size: 11px; }
+      
+      .controls { justify-content: center; width: 100%; }
+      
+      .q { font-size: 18px; }
+      .hint { font-size: 13px; }
+      
+      .yes, .no {
+        flex: 1;
+        min-width: 120px;
+      }
+      
+      .actions {
+        flex-direction: column;
+        width: 100%;
+      }
+      
+      .actions button {
+        width: 100%;
+      }
+      
+      .creatureNumber {
+        top: 16px;
+        left: 16px;
+        font-size: 16px;
+        padding: 6px 12px;
+      }
+      
+      .resultName { font-size: 22px; }
+      
+      .small { font-size: 11px; }
+      
+      .controls { width: 100%; }
+      .controls button { width: 100%; }
+      
+      /* כפתורי ניווט תחתונים במובייל */
+      #prevBtn, #restartBtn, #nextBtn {
+        flex: 1;
+        min-width: 100px;
+      }
     }
   </style>
 </head>
@@ -274,15 +322,12 @@
         <div class="badge" aria-hidden="true"></div>
         <div>
           <h1>מגדיר לחיות דמיוניות</h1>
-          <div class="sub">בחר יצור → ענה כן/לא לפי התכונות → קבל את השם</div>
+          <div class="sub">בחרו יצור → ענו כן/לא לפי התכונות → קבלו את השם</div>
         </div>
       </div>
 
-      <div class="controls">
-        <span class="pill" id="creaturePill">יצור: 001</span>
-        <button class="primary" id="prevBtn">הקודם</button>
-        <button class="primary" id="nextBtn">הבא</button>
-        <button id="restartBtn">איפוס שאלון</button>
+      <div class="controls" style="display:none;">
+        <!-- כפתורים הועברו למטה -->
       </div>
     </div>
   </div>
@@ -290,71 +335,50 @@
 
 <main>
   <div class="wrap">
-    <div class="grid">
+    <section class="card">
+      <div class="cardBody">
+        <!-- תמונת היצור עם מספר -->
+        <div class="imgContainer">
+          <div class="creatureNumber" id="creatureNumber">001</div>
+          <img id="creatureImg" alt="יצור דמיוני" />
+        </div>
 
-      <!-- Left: Creature + Questions -->
-      <section class="card">
-        <div class="cardHead">
-          <h2>היצור הנבחר</h2>
-          <div class="small">
-            מקשים: <span class="kbd">Y</span>=כן <span class="kbd">N</span>=לא
-            <span class="kbd">←</span>/<span class="kbd">→</span>=החלפה
+        <!-- אזור שאלות -->
+        <div id="qaArea">
+          <p class="q" id="questionText">בעל מקור ברור?</p>
+          <p class="hint" id="questionHint">ענו לפי מה שרואים בתמונה למעלה</p>
+
+          <div class="actions">
+            <button class="yes" id="yesBtn">✓ כן</button>
+            <button class="no" id="noBtn">✗ לא</button>
           </div>
         </div>
-        <div class="cardBody">
-          <div class="imgFrame">
-            <img id="creatureImg" alt="יצור דמיוני" />
-          </div>
 
-          <div style="height: 14px;"></div>
-
-          <div id="qaArea">
-            <p class="q" id="questionText">טוען שאלון…</p>
-            <p class="hint" id="questionHint"></p>
-
-            <div class="actions">
-              <button class="yes" id="yesBtn">כן</button>
-              <button class="no" id="noBtn">לא</button>
-            </div>
-
-            <div class="path" id="pathBox" title="המסלול שהתקדם עד עכשיו"></div>
-          </div>
-
-          <div id="resultArea" style="display:none;">
-            <p class="resultName" id="resultName"></p>
-            <p class="hint">אם זה לא תואם את היצור שבתמונה, פשוט לחץ/י <b>איפוס שאלון</b> וענה/י שוב.</p>
-            <div class="actions">
-              <button class="primary" id="againBtn">שאל שוב על אותו יצור</button>
-              <button class="primary" id="nextAfterResultBtn">ליצור הבא</button>
-            </div>
-            <div class="path" id="pathBox2"></div>
-          </div>
+        <!-- אזור תוצאות -->
+        <div id="resultArea" style="display:none;">
+          <p class="resultName" id="resultName"></p>
         </div>
-      </section>
-
-      <!-- Right: Gallery -->
-      <aside class="card">
-        <div class="cardHead">
-          <h2>גלריה</h2>
-          <div class="small">לחץ על תמונה כדי לבחור יצור</div>
+        
+        <!-- קרדיטים -->
+        <div style="margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; color: var(--muted); font-size: 13px;">
+          עריכה: מילכה ברקו גרש<br>
+          מקור: לא ידוע
         </div>
-        <div class="cardBody">
-          <p class="hint" style="margin-top:0;">
-            התמונות נטענות ישירות מגיטהאב (raw).
-          </p>
-
-          <div style="height: 12px;"></div>
-          <div class="gallery" id="gallery"></div>
+        
+        <!-- ניווט תחתון -->
+        <div style="margin-top: 20px; margin-bottom: 20px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <button class="primary" id="prevBtn">← ליצור הקודם</button>
+          <button class="primary" id="restartBtn">ניסיון חוזר</button>
+          <button class="primary" id="nextBtn">ליצור הבא →</button>
         </div>
-      </aside>
-
-    </div>
+      </div>
+    </section>
   </div>
 </main>
 
 <script>
   /***********************
-   * 1) CONFIG: images (from your GitHub raw links)
+   * 1) CONFIG: images (from GitHub)
    ***********************/
   const IMAGES = [
     "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/1%20%D7%97%D7%A9%D7%95%D7%A3%20%D7%92%D7%95%D7%9C%D7%92%D7%95%D7%9C%D7%AA%20%D7%9E%D7%A2%D7%95%D7%A4%D7%A3.png?raw=true",
@@ -372,7 +396,7 @@
     "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/13%20%D7%91%D7%99%D7%A6%D7%A0%D7%99%D7%AA%20%D7%A9%D7%98%D7%95%D7%97%D7%AA%20%D7%9E%D7%A7%D7%95%D7%A8.png?raw=true",
     "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/14%20%D7%92%D7%A8%D7%92%D7%A8%D7%9F%20%D7%9E%D7%A6%D7%95%D7%99.png?raw=true",
     "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/15%20%D7%90%D7%95%D7%9B%D7%9C%20%D7%A2%D7%95%D7%92%D7%99%D7%95%D7%AA%20%D7%9E%D7%A6%D7%95%D7%99.png?raw=true",
-    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/16%20%D7%A9%D7%A8%D7%A4%D7%9B%D7%A3%20%D7%94%D7%97%D7%95%D7%9C%D7%95%D7%AA.png?raw=true",
+    "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/16%20%D7%A9%D7%A8%D7%A4%D7%A8%D7%A3%20%D7%94%D7%97%D7%95%D7%9C%D7%95%D7%AA.png?raw=true",
     "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/17%20%D7%91%D7%99%D7%A9%D7%9F%20%D7%94%D7%A2%D7%A6%D7%99%D7%9D.png?raw=true",
     "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/18%20%D7%A0%D7%99%D7%A0%D7%92'%D7%94%20%D7%A6%D7%94%D7%95%D7%91%D7%94.png?raw=true",
     "https://github.com/milkabcd-dot/Imaginary-animals/blob/main/19%20%D7%A9%D7%97%D7%99%D7%99%D7%9F%20%D7%94%D7%A2%D7%9E%D7%A7%D7%99%D7%9D.png?raw=true",
@@ -388,87 +412,89 @@
 
   let CREATURE_COUNT = IMAGES.length;
 
+  // התשובות הנכונות לכל יצור (לפי מספר)
+  const CORRECT_ANSWERS = {
+    1: "חשוף גולגולת מעופף",
+    2: "זחלן ימי",
+    3: "לילית זריזה",
+    4: "נברן מדומה",
+    5: "גרפילד צפוני",
+    6: "אגוזן מקופף",
+    7: "רב רגל עגלגל",
+    8: "פרציפלוך מצוי",
+    9: "קוקרצ'ה מפוספסת",
+    10: "שכלן מטפס",
+    11: "קוקרצ'ה שחורה",
+    12: "חרטטן גדול",
+    13: "ביצנית שטוחת מקור",
+    14: "גרגרן מצוי",
+    15: "אוכל עוגיות מצוי",
+    16: "שרפכף החולות",
+    17: "בישן העצים",
+    18: "נינג'ה צהובה",
+    19: "שחיין העמקים",
+    20: "ג'וק מלמקי",
+    21: "קשקשן הנחלים",
+    22: "תולען היערות",
+    23: "אוכל עוגיות מפוספס",
+    24: "מפצח חצילים צפוני",
+    25: "פנטהפוד ארסי",
+    26: "ביישן השדות",
+    27: "טור מתכנס"
+  };
+
   function pad3(n) { return String(n).padStart(3, "0"); }
   function imagePath(index1based) {
     return IMAGES[index1based - 1];
   }
 
   /***********************
-   * 2) Decision tree (your exact logic)
+   * 2) Decision tree
    ***********************/
   const TREE = {
     1: { q: "בעל מקור ברור?", yes: 2, no: 7 },
-
     2: { q: "בעל כנפיים?", yes: 3, no: { leaf: "מפצח החצילים הצפוני" } },
-
     3: { q: "בעל רגליים ארוכות במיוחד?", yes: 4, no: 5 },
-
     4: { q: "בעל מקור ארוך ושטוח?", yes: { leaf: "ביצנית שטוחת מקור" }, no: { leaf: "פרצופלוך מצוי" } },
-
     5: { q: "בעל מקור גדול ורחב?", yes: { leaf: "תולען היערות" }, no: 6 },
-
     6: { q: "בעל מקור ארוך וצר?", yes: { leaf: "שרפרף החולות" }, no: { leaf: "תולען החוף" } },
-
     7: { q: "יש לו יותר מ־6 רגליים?", yes: 8, no: 12 },
-
     8: { q: "בעל 12 רגליים?", yes: { leaf: "רב רגל עגלגל" }, no: 9 },
-
     9: { q: "בעל 8 רגליים?", yes: 10, no: { leaf: "זחלן ימי" } },
-
     10:{ q: "כל זוג רגליים יוצא מפרק נפרד?", yes: { leaf: "נינג'ה צהובה" }, no: 11 },
-
     11:{ q: "בעל גוף שחור?", yes: { leaf: "קוקרצ'ה שחורה" }, no: { leaf: "קוקרצ'ה מפוספסת" } },
-
     12:{ q: "בעל סנפירים?", yes: 13, no: 15 },
-
     13:{ q: "בעל בלורית שיער?", yes: { leaf: "קשקשן הנחלים" }, no: 14 },
-
     14:{ q: "בעל גוף שמן ונפוח?", yes: { leaf: "שחיין נפוח" }, no: { leaf: "שחיין האגמים" } },
-
     15:{ q: "בעל קשקשים ברורים?", yes: 16, no: 18 },
-
     16:{ q: "בעל אף ארוך וצר?", yes: { leaf: "גרגרן מצוי" }, no: 17 },
-
     17:{ q: "בעל לשון מפוצלת?", yes: { leaf: "אוכל עוגיות מצוי" }, no: { leaf: "אוכל עוגיות מפוספס" } },
-
     18:{ q: "בעל זנב ארוך במיוחד?", yes: 19, no: 23 },
-
     19:{ q: "בעל שיער שחור וארוך יחסית?", yes: { leaf: "נברן מדומה" }, no: 20 },
-
     20:{ q: "בעל עיניים גדולות ומבוהלות?", yes: { leaf: "ביישן העצים" }, no: 21 },
-
     21:{ q: "בעל אצבעות רגליים ארוכות?", yes: { leaf: "שכלן מטפס" }, no: 22 },
-
     22:{ q: "בעל זנב עבה ומפוספס?", yes: { leaf: "גרפילד צפוני" }, no: { leaf: "אגוזן מקופף" } },
-
     23:{ q: "בעל מחושים (אנטנות?)", yes: 24, no: 26 },
-
     24:{ q: "בעל כנפיים ברורות?", yes: { leaf: "לילית זריזה" }, no: 25 },
-
     25:{ q: "מחושים ארוכים מאורך הגוף?", yes: { leaf: "ג'וק מלמקי" }, no: { leaf: "פנטפוד ארסי" } },
-
     26:{ q: "בעל נוצות?", yes: { leaf: "חשוף גולגולת מעופף" }, no: 27 },
-
     27:{ q: "בעל זנב ברור?", yes: 28, no: 30 },
-
     28:{ q: "בעל עיניים גדולות במיוחד?", yes: { leaf: "ביישן השדות" }, no: 29 },
-
     29:{ q: "בעל שיניים גדולות ובולטות?", yes: { leaf: "חתלתול קטלני" }, no: { leaf: "צ'יקמוק מצ'וקמק" } },
-
     30:{ q: "בעל קרניים?", yes: { leaf: "טור מתכנס" }, no: { leaf: "חרטטן גדול" } },
   };
 
   /***********************
    * 3) App state
    ***********************/
-  let currentCreature = 1; // 1..CREATURE_COUNT
+  let currentCreature = 1;
   let nodeId = 1;
-  let path = []; // array of {nodeId, answer: true/false}
+  let path = [];
 
   /***********************
    * 4) DOM refs
    ***********************/
-  const creaturePill = document.getElementById("creaturePill");
+  const creatureNumber = document.getElementById("creatureNumber");
   const creatureImg  = document.getElementById("creatureImg");
 
   const qaArea = document.getElementById("qaArea");
@@ -476,8 +502,6 @@
 
   const questionText = document.getElementById("questionText");
   const questionHint = document.getElementById("questionHint");
-  const pathBox = document.getElementById("pathBox");
-  const pathBox2 = document.getElementById("pathBox2");
   const resultName = document.getElementById("resultName");
 
   const yesBtn = document.getElementById("yesBtn");
@@ -487,25 +511,15 @@
   const nextBtn = document.getElementById("nextBtn");
   const restartBtn = document.getElementById("restartBtn");
 
-  const againBtn = document.getElementById("againBtn");
-  const nextAfterResultBtn = document.getElementById("nextAfterResultBtn");
-
-  const gallery = document.getElementById("gallery");
-
   /***********************
    * 5) Render helpers
    ***********************/
   function setCreature(index1based) {
     currentCreature = clamp(index1based, 1, CREATURE_COUNT);
-    creaturePill.textContent = `יצור: ${pad3(currentCreature)}`;
+    creatureNumber.textContent = pad3(currentCreature);
 
     creatureImg.src = imagePath(currentCreature);
     creatureImg.alt = `יצור ${pad3(currentCreature)}`;
-
-    // highlight selected thumb
-    [...document.querySelectorAll(".thumb")].forEach(el => {
-      el.classList.toggle("selected", Number(el.dataset.idx) === currentCreature);
-    });
 
     resetQuiz();
   }
@@ -526,13 +540,21 @@
     }
 
     questionText.textContent = node.q;
-    questionHint.textContent = "ענה/י לפי מה שרואים בתמונה. (אין פה 'נכון/לא נכון' אוטומטי — זה מגדיר ידני.)";
-    pathBox.textContent = formatPath();
+    questionHint.textContent = "ענו לפי מה שרואים בתמונה למעלה";
   }
 
-  function formatPath() {
-    if (path.length === 0) return "מסלול: (התחלה)";
-    return "מסלול: " + path.map(step => `${step.nodeId}:${step.answer ? "כן" : "לא"}`).join(" → ");
+  function showResult(name) {
+    qaArea.style.display = "none";
+    resultArea.style.display = "block";
+    
+    const correctAnswer = CORRECT_ANSWERS[currentCreature];
+    const isCorrect = name === correctAnswer;
+    
+    if (isCorrect) {
+      resultName.innerHTML = `✅ <span style="color: var(--good);">כל הכבוד!</span><br>${name}`;
+    } else {
+      resultName.innerHTML = `❌ <span style="color: var(--bad);">טעיתם!</span><br>קיבלתם: ${name}<br><span style="font-size: 18px; color: var(--muted);">התשובה הנכונה: ${correctAnswer}</span>`;
+    }
   }
 
   function answer(isYes) {
@@ -553,47 +575,10 @@
     }
   }
 
-  function showResult(name) {
-    qaArea.style.display = "none";
-    resultArea.style.display = "block";
-    resultName.textContent = name;
-    pathBox2.textContent = formatPath();
-  }
-
   function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
 
   /***********************
-   * 6) Gallery
-   ***********************/
-  function buildGallery() {
-    gallery.innerHTML = "";
-    for (let i = 1; i <= CREATURE_COUNT; i++) {
-      const t = document.createElement("div");
-      t.className = "thumb";
-      t.dataset.idx = String(i);
-      t.title = `בחר יצור ${pad3(i)}`;
-
-      const img = document.createElement("img");
-      img.loading = "lazy";
-      img.src = imagePath(i);
-      img.alt = `תמונה ממוזערת ${pad3(i)}`;
-
-      const label = document.createElement("div");
-      label.className = "thumbLabel";
-      label.textContent = pad3(i);
-
-      t.appendChild(img);
-      t.appendChild(label);
-
-      t.addEventListener("click", () => setCreature(i));
-      gallery.appendChild(t);
-    }
-
-    setCreature(clamp(currentCreature, 1, CREATURE_COUNT));
-  }
-
-  /***********************
-   * 7) Events
+   * 6) Events
    ***********************/
   yesBtn.addEventListener("click", () => answer(true));
   noBtn.addEventListener("click", () => answer(false));
@@ -601,9 +586,6 @@
   prevBtn.addEventListener("click", () => setCreature(currentCreature - 1));
   nextBtn.addEventListener("click", () => setCreature(currentCreature + 1));
   restartBtn.addEventListener("click", resetQuiz);
-
-  againBtn.addEventListener("click", resetQuiz);
-  nextAfterResultBtn.addEventListener("click", () => setCreature(currentCreature + 1));
 
   // Keyboard shortcuts
   document.addEventListener("keydown", (e) => {
@@ -616,9 +598,14 @@
   });
 
   /***********************
-   * 8) Boot
+   * 7) Boot
    ***********************/
-  buildGallery();
+  // Initialize immediately without waiting for image load
+  setCreature(1);
+  
+  // Also try to preload the first image, but don't wait for it
+  const firstImg = new Image();
+  firstImg.src = imagePath(1);
 </script>
 
 </body>
