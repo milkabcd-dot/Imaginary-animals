@@ -92,7 +92,6 @@
       user-select: none;
       font-size: 14px;
       box-shadow: 0 2px 8px rgba(0,0,0,.05);
-      touch-action: manipulation;
     }
 
     button:hover { 
@@ -188,7 +187,6 @@
       height: auto;
       border-radius: 12px;
       display: block;
-      background: rgba(255,255,255,.02);
       object-fit: contain;
     }
 
@@ -197,14 +195,12 @@
       margin: 0 0 12px 0;
       line-height: 1.55;
       font-weight: 500;
-      text-align: center;
     }
     .hint {
       margin: 0 0 16px 0;
       color: var(--muted);
       font-size: 14px;
       line-height: 1.5;
-      text-align: center;
     }
 
     .actions {
@@ -223,43 +219,60 @@
       letter-spacing: .2px;
       text-align: center;
       font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .navHint {
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 16px;
+      padding: 12px;
+      background: rgba(148,163,184,.08);
+      border-radius: 12px;
+      border: 1px solid var(--border);
       line-height: 1.6;
     }
 
     @media (max-width: 600px) {
       .wrap { padding: 12px; }
       .cardBody { padding: 16px; }
-      
+
       h1 { font-size: 16px; }
       .sub { font-size: 11px; }
-      
+
       .q { font-size: 18px; }
       .hint { font-size: 13px; }
-      
+
+      .yes, .no {
+        flex: 1;
+        min-width: 120px;
+      }
+
       .actions {
         flex-direction: column;
         width: 100%;
       }
-      
+
       .actions button {
         width: 100%;
       }
-      
+
       .creatureNumber {
         top: 16px;
         left: 16px;
         font-size: 16px;
         padding: 6px 12px;
       }
-      
+
       .resultName { font-size: 22px; }
-      
+
       #bottomNav {
         width: 100%;
         padding: 0 12px;
         box-sizing: border-box;
       }
-      
+
       #prevBtn, #restartBtn, #nextBtn {
         flex: 1 1 auto;
         min-width: 90px;
@@ -292,7 +305,7 @@
     <section class="card">
       <div class="cardBody">
 
-        <div class="imgContainer">
+        <div class="imgContainer" id="imgContainer">
           <div class="creatureNumber" id="creatureNumber">001</div>
           <img id="creatureImg" alt="יצור דמיוני" />
         </div>
@@ -310,16 +323,16 @@
         <div id="resultArea" style="display:none;">
           <p class="resultName" id="resultName"></p>
         </div>
-        
+
         <div style="margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; color: var(--muted); font-size: 13px;">
           עריכה: מילכה ברקו גרש<br>
           מקור: לא ידוע
         </div>
-        
+
         <div id="bottomNav" style="margin-top: 20px; margin-bottom: 20px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; max-width: 100%;">
-          <button class="primary" id="prevBtn">← ליצור הקודם</button>
-          <button class="primary" id="restartBtn">ניסיון חוזר</button>
-          <button class="primary" id="nextBtn">ליצור הבא →</button>
+          <button class="primary" id="prevBtn" style="touch-action: manipulation;">← ליצור הקודם</button>
+          <button class="primary" id="restartBtn" style="touch-action: manipulation;">ניסיון חוזר</button>
+          <button class="primary" id="nextBtn" style="touch-action: manipulation;">ליצור הבא →</button>
         </div>
 
       </div>
@@ -358,7 +371,7 @@
     "https://raw.githubusercontent.com/milkabcd-dot/Imaginary-animals/main/27%20%D7%98%D7%95%D7%A8%20%D7%9E%D7%AA%D7%9B%D7%A0%D7%A1.png"
   ];
 
-  let CREATURE_COUNT = IMAGES.length;
+  const CREATURE_COUNT = IMAGES.length;
 
   const CORRECT_ANSWERS = {
     1: "חשוף גולגולת מעופף",
@@ -386,20 +399,21 @@
     23: "אוכל עוגיות מפוספס",
     24: "מפצח חצילים צפוני",
     25: "פנטפוד ארסי",
-    26: "ביישן השדות",
+    26: "בישן השדות",
     27: "טור מתכנס"
   };
 
   function pad3(n) { return String(n).padStart(3, "0"); }
   function imagePath(index1based) { return IMAGES[index1based - 1]; }
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
 
   const TREE = {
     1: { q: "בעל מקור ברור?", yes: 2, no: 7 },
     2: { q: "בעל כנפיים?", yes: 3, no: { leaf: "מפצח חצילים צפוני" } },
     3: { q: "בעל רגליים ארוכות במיוחד?", yes: 4, no: 5 },
     4: { q: "בעל מקור ארוך ושטוח?", yes: { leaf: "ביצנית שטוחת מקור" }, no: { leaf: "פרציפלוך מצוי" } },
-    5: { q: "בעל מקור גדול ורחב?", yes: { leaf: "מפצח חצילים צפוני" }, no: 6 },
-    6: { q: "בעל מקור ארוך וצר?", yes: { leaf: "שרפכף החולות" }, no: { leaf: "תולען היערות" } },
+    5: { q: "בעל מקור גדול ורחב?", yes: { leaf: "תולען היערות" }, no: 6 },
+    6: { q: "בעל מקור ארוך וצר?", yes: { leaf: "שרפכף החולות" }, no: { leaf: "תולען החוף" } },
 
     7: { q: "יש לו יותר מ־6 רגליים?", yes: 8, no: 12 },
     8: { q: "בעל 12 רגליים?", yes: { leaf: "רב רגל עגלגל" }, no: 9 },
@@ -408,7 +422,8 @@
     11:{ q: "בעל גוף שחור?", yes: { leaf: "קוקרצ'ה שחורה" }, no: { leaf: "קוקרצ'ה מפוספסת" } },
 
     12:{ q: "בעל סנפירים?", yes: 13, no: 15 },
-    13:{ q: "בעל בלורית שיער?", yes: { leaf: "קשקשן הנחלים" }, no: { leaf: "שחיין העמקים" } },
+    13:{ q: "בעל בלורית שיער?", yes: { leaf: "קשקשן הנחלים" }, no: 14 },
+    14:{ q: "בעל גוף שמן ונפוח?", yes: { leaf: "שחיין נפוח" }, no: { leaf: "שחיין האגמים" } },
 
     15:{ q: "בעל קשקשים ברורים?", yes: 16, no: 18 },
     16:{ q: "בעל אף ארוך וצר?", yes: { leaf: "גרגרן מצוי" }, no: 17 },
@@ -424,8 +439,11 @@
     24:{ q: "בעל כנפיים ברורות?", yes: { leaf: "לילית זריזה" }, no: 25 },
     25:{ q: "מחושים ארוכים מאורך הגוף?", yes: { leaf: "ג'וק מלמקי" }, no: { leaf: "פנטפוד ארסי" } },
 
-    26:{ q: "בעל נוצות?", yes: { leaf: "חשוף גולגולת מעופף" }, no: 27 },
-    27:{ q: "בעל קרניים?", yes: { leaf: "טור מתכנס" }, no: { leaf: "חרטטן גדול" } },
+    26:{ q: "ללא נוצות?", yes: 27, no: { leaf: "חשוף גולגולת מעופף" } },
+    27:{ q: "בעל זנב ברור?", yes: 28, no: 30 },
+    28:{ q: "בעל עיניים גדולות במיוחד?", yes: { leaf: "בישן השדות" }, no: 29 },
+    29:{ q: "בעל שיניים גדולות ובולטות?", yes: { leaf: "חתלתול קטלני" }, no: { leaf: "צ'יקמוק מצ'וקמק" } },
+    30:{ q: "בעל קרניים?", yes: { leaf: "טור מתכנס" }, no: { leaf: "חרטטן גדול" } },
   };
 
   let currentCreature = 1;
@@ -433,6 +451,7 @@
 
   const creatureNumber = document.getElementById("creatureNumber");
   const creatureImg  = document.getElementById("creatureImg");
+  const imgContainer = document.getElementById("imgContainer");
 
   const qaArea = document.getElementById("qaArea");
   const resultArea = document.getElementById("resultArea");
@@ -448,30 +467,18 @@
   const nextBtn = document.getElementById("nextBtn");
   const restartBtn = document.getElementById("restartBtn");
 
-  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
-
-  function setCreature(index1based) {
-    currentCreature = clamp(index1based, 1, CREATURE_COUNT);
-
-    creatureNumber.textContent = pad3(currentCreature);
-
-    creatureImg.src = imagePath(currentCreature);
-    creatureImg.alt = `יצור ${pad3(currentCreature)}`;
-
-    resetQuiz();
-  }
-
   function resetQuiz() {
     nodeId = 1;
     resultArea.style.display = "none";
     qaArea.style.display = "block";
+    imgContainer.style.display = "flex";
     renderNode();
   }
 
   function renderNode() {
     const node = TREE[nodeId];
     if (!node) {
-      showResult("שגיאה בעץ ההחלטות");
+      showResult("שגיאה: צומת לא קיים בעץ");
       return;
     }
 
@@ -489,10 +496,7 @@
     if (isCorrect) {
       resultName.innerHTML = `✅ <span style="color: var(--good);">כל הכבוד!</span><br>${name}`;
     } else {
-      resultName.innerHTML =
-        `❌ <span style="color: var(--bad);">טעיתם!</span><br>` +
-        `קיבלתם: ${name}<br>` +
-        `<span style="font-size: 18px; color: var(--muted);">התשובה הנכונה: ${correctAnswer}</span>`;
+      resultName.innerHTML = `❌ <span style="color: var(--bad);">טעיתם!</span><br>קיבלתם: ${name}<br><span style="font-size: 18px; color: var(--muted);">התשובה הנכונה: ${correctAnswer}</span>`;
     }
   }
 
@@ -508,16 +512,85 @@
     } else if (next && typeof next === "object" && next.leaf) {
       showResult(next.leaf);
     } else {
-      showResult("שגיאה: יעד לא תקין");
+      showResult("שגיאה: יעד לא תקין בעץ");
     }
   }
 
-  yesBtn.addEventListener("click", () => answer(true));
-  noBtn.addEventListener("click", () => answer(false));
+  function showFinishScreen() {
+    imgContainer.style.display = "none";
+    qaArea.style.display = "none";
+    resultArea.style.display = "block";
 
-  prevBtn.addEventListener("click", () => setCreature(currentCreature - 1));
-  nextBtn.addEventListener("click", () => setCreature(currentCreature + 1));
-  restartBtn.addEventListener("click", () => resetQuiz());
+    resultName.innerHTML = `
+      <div style="font-size: 28px; font-weight: 700; color: var(--good); margin-bottom: 14px;">
+        🎉 סיימתם, כל הכבוד!
+      </div>
+
+      <div class="navHint" style="font-size: 15px;">
+        <b>מגדיר דיכוטומי</b> הוא כלי מדעי המשמש לזיהוי ומיון פריטים (כגון צמחים, בעלי חיים או חפצים)
+        על בסיס בחירה עקבית בין שתי תכונות מנוגדות.<br><br>
+        הוא מבוסס על צמדי ביטויים (דיכוטומיה – חלוקה לשניים) המאפשרים למשתמש לצמצם את האפשרויות
+        עד להגעה לזיהוי הסופי.
+        <br><br>
+        <b>שלכם באהבה: מילכה ברקו גרש</b>
+      </div>
+
+      <div style="margin-top: 18px;">
+        <button class="primary" onclick="setCreature(1)">🔁 התחלה מחדש</button>
+      </div>
+    `;
+  }
+
+  function setCreature(index1based) {
+    currentCreature = clamp(index1based, 1, CREATURE_COUNT);
+
+    creatureNumber.textContent = pad3(currentCreature);
+    creatureImg.src = imagePath(currentCreature);
+    creatureImg.alt = `יצור ${pad3(currentCreature)}`;
+
+    resetQuiz();
+  }
+
+  yesBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    answer(true);
+  });
+
+  noBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    answer(false);
+  });
+
+  prevBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (currentCreature === 1) return;
+    setCreature(currentCreature - 1);
+  });
+
+  nextBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    if (currentCreature === CREATURE_COUNT) {
+      showFinishScreen();
+      return;
+    }
+
+    setCreature(currentCreature + 1);
+  });
+
+  restartBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    resetQuiz();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    const k = e.key.toLowerCase();
+    if (k === "y") answer(true);
+    if (k === "n") answer(false);
+    if (e.key === "ArrowLeft") setCreature(currentCreature - 1);
+    if (e.key === "ArrowRight") setCreature(currentCreature + 1);
+    if (k === "r") resetQuiz();
+  });
 
   setCreature(1);
 </script>
